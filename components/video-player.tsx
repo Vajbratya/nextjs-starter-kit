@@ -136,6 +136,26 @@ export const VideoPlayer: React.FC<CustomVideoPlayerProps> = ({ videoSrc }) => {
     }
   }, []);
 
+  useEffect(() => {
+    const player = playerRef.current;
+    
+    return () => {
+      if (player) {
+        player.pause();
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (playerRef.current) {
+      if (isPlaying) {
+        playerRef.current.play();
+      } else {
+        playerRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+
   return (
     <div ref={playerRef} className="flex flex-col justify-center items-center max-w-full relative mb-16">
       <div className="relative w-full">

@@ -1,80 +1,85 @@
-import OrbitingCircles from "@/components/magicui/orbiting-circles";
-import { IconProps } from "@radix-ui/react-icons/dist/types";
-import Image from "next/image";
+"use client";
 
-export function OrbitingCirclesComponent() {
+import { motion } from "framer-motion";
+
+export default function OrbitingCircles() {
+  const orbitingElements = [
+    { icon: "📝", label: "Laudos" },
+    { icon: "⚡", label: "Rápido" },
+    { icon: "🔒", label: "Seguro" },
+    { icon: "🤖", label: "IA" },
+  ];
+
   return (
-    <div className="relative flex h-[500px] w-full max-w-[32rem] items-center justify-center overflow-hidden rounded-lg">
-      <span className="pointer-events-none whitespace-pre-wrap bg-gradient-to-b from-black to-gray-500/80 bg-clip-text text-center text-8xl font-semibold leading-none text-transparent dark:from-white dark:to-slate-900/10">
-        Build Fast
-      </span>
+    <div className="relative w-full h-[400px]">
+      {/* Central element */}
+      <motion.div
+        className="absolute top-1/2 left-1/2 w-32 h-32 -mt-16 -ml-16 rounded-full bg-[#7CFFD4]/10 backdrop-blur-sm flex items-center justify-center"
+        animate={{
+          scale: [1, 1.1, 1],
+          opacity: [0.5, 0.8, 0.5],
+        }}
+        transition={{
+          duration: 4,
+          repeat: Infinity,
+          ease: "easeInOut",
+        }}
+      >
+        <div className="text-[#7CFFD4] text-2xl font-bold">Laudos.AI</div>
+      </motion.div>
 
-      {/* Inner Circles */}
-      <OrbitingCircles
-        className="h-[30px] w-[30px] border-none bg-transparent"
-        duration={20}
-        delay={20}
-        radius={80}
-      >
-        <Icons.typescript />
-      </OrbitingCircles>
-      <OrbitingCircles
-        className="h-[30px] w-[30px] border-none bg-transparent"
-        duration={20}
-        delay={10}
-        radius={80}
-      >
-        <Icons.tailwind />
-      </OrbitingCircles>
+      {/* Orbiting elements */}
+      {orbitingElements.map((element, i) => (
+        <motion.div
+          key={i}
+          className="absolute top-1/2 left-1/2 w-full h-full -mt-[200px] -ml-[200px]"
+          animate={{
+            rotate: 360,
+          }}
+          transition={{
+            duration: 20,
+            delay: i * -5,
+            repeat: Infinity,
+            ease: "linear",
+          }}
+        >
+          <motion.div
+            className="absolute top-0 left-1/2 -ml-12 bg-[#7CFFD4]/10 backdrop-blur-sm p-3 rounded-lg"
+            animate={{
+              scale: [1, 1.1, 1],
+              opacity: [0.6, 1, 0.6],
+            }}
+            transition={{
+              duration: 2,
+              delay: i * 0.5,
+              repeat: Infinity,
+            }}
+          >
+            <div className="text-xl">{element.icon}</div>
+            <div className="text-[#7CFFD4] text-sm">{element.label}</div>
+          </motion.div>
+        </motion.div>
+      ))}
 
-      {/* Outer Circles (reverse) */}
-      <OrbitingCircles
-        className="h-[50px] w-[50px] border-none bg-transparent"
-        reverse
-        radius={190}
-        duration={20}
-      >
-        <Icons.nextjs />
-      </OrbitingCircles>
-      <OrbitingCircles
-        className="h-[50px] w-[50px] border-none bg-transparent"
-        reverse
-        radius={190}
-        duration={20}
-        delay={20}
-      >
-        <Icons.supabase />
-      </OrbitingCircles>
+      {/* Pulse rings */}
+      {[...Array(2)].map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-[#7CFFD4]/20"
+          initial={{ width: 100, height: 100, opacity: 0.8 }}
+          animate={{
+            width: [100, 300],
+            height: [100, 300],
+            opacity: [0.8, 0],
+          }}
+          transition={{
+            duration: 4,
+            delay: i * 2,
+            repeat: Infinity,
+            ease: "easeOut",
+          }}
+        />
+      ))}
     </div>
   );
 }
-
-const Icons = {
-  typescript: (props: IconProps) => (
-    <Image src="https://utfs.io/f/5b51351d-218b-4931-a296-0a9275030aaf-8myeez.png" alt=""
-      width={100}
-      height={100}
-    />
-  ),
-  tailwind: (props: IconProps) => (
-    <Image src="https://utfs.io/f/666774c0-dc3a-4d5a-84b7-cc96e682db61-bhgw4o.png" alt=""
-      width={100}
-      height={100}
-    // className="bg-black p-2 rounded"
-    />
-  ),
-  supabase: (props: IconProps) => (
-    <Image src="https://utfs.io/f/c62a5d13-91e4-476f-9d36-786d9995c97f-rqpuxo.png" alt=""
-      width={100}
-      height={100}
-    // className="bg-black p-2 rounded"
-    />
-  ),
-  nextjs: (props: IconProps) => (
-    <Image src="https://utfs.io/f/a8df6965-e6df-417a-ab0b-b3ad33d701d7-hcfblw.png" alt=""
-      width={100}
-      height={100}
-      className="bg-white p-1 rounded"
-    />
-  ),
-};

@@ -1,71 +1,148 @@
-import { TITLE_TAILWIND_CLASS } from '@/utils/constants'
-import Image from 'next/image'
-import Link from "next/link"
-export default function BlogSample() {
+"use client";
 
-  const articles = [
-    {
-      id: 1,
-      image: "https://seo-heist.s3.amazonaws.com/user_2cxTR5I0BjOLeNCnee3qUze0LUo/1af01aca-6ce1-4a3f-8e54-e945e3104889.png",
-      title: "The Importance of Storytelling in Modern Branding",
-      date: "2024-04-15 21:16:04.765648-05"
-    },
-    {
-      id: 2,
-      image: "https://seo-heist.s3.amazonaws.com/user_2cxTR5I0BjOLeNCnee3qUze0LUo/96bf3bb0-9e15-4745-b966-91d719651429.png",
-      title: "How to Choose the Right Dog for Your Lifestyle",
-      date: "2024-04-16 08:29:32.188999-05"
-    },
-    {
-      id: 3,
-      image: "https://seo-heist.s3.amazonaws.com/user_2cxTR5I0BjOLeNCnee3qUze0LUo/36292d36-cfae-4106-8d59-ace222f4bc82.png",
-      title: "Top Automation Testing Suites for Seamless Software Testing",
-      date: "2024-04-16 15:20:52.368844-05"
+import { motion } from "framer-motion";
+import { useInView } from "react-intersection-observer";
+import Link from "next/link";
+import Image from "next/image";
+
+const blogPosts = [
+  {
+    slug: "impacto-ia-radiologia",
+    title: "O Impacto da IA na Radiologia",
+    excerpt: "Como a inteligência artificial está revolucionando o diagnóstico por imagem e melhorando a precisão dos laudos médicos.",
+    image: "https://i.ibb.co/wQRw1SV/0-3.png",
+    date: "15 de Março, 2024",
+    readTime: "8 min",
+    category: "Tecnologia",
+    author: {
+      name: "Han Dengshi",
+      role: "Diretor de Tecnologia e Co-fundador",
+      avatar: "https://i.ibb.co/t2b7BjW/1hx98-EHHqgw.png"
     }
-  ]
+  },
+  {
+    slug: "ia-radiologia-avancada",
+    title: "IA na Radiologia: Uma Revolução no Diagnóstico por Imagem",
+    excerpt: "Uma análise aprofundada de como a inteligência artificial está transformando a prática radiológica.",
+    image: "https://i.ibb.co/WVCLjb7/Captura-de-tela-2024-09-18-204508.png",
+    date: "10 de Março, 2024",
+    readTime: "10 min",
+    category: "Tecnologia",
+    author: {
+      name: "Natan Ribeiro",
+      role: "CEO e Fundador",
+      avatar: "https://i.ibb.co/t2b7BjW/1hx98-EHHqgw.png"
+    }
+  },
+  {
+    slug: "comparacao-laudosai-concorrentes",
+    title: "Comparação: Laudos.AI vs Concorrentes",
+    excerpt: "Uma análise detalhada das vantagens do Laudos.AI em relação a outras soluções de laudos radiológicos no mercado brasileiro.",
+    image: "https://i.ibb.co/3zxSXTn/natan-paraisk-RADIOLOGY-REPORTS-WITH-AI-ar-43-style-raw-s-44ea6ffc-871b-408e-afd8-6f32b72565ae.png",
+    date: "5 de Março, 2024",
+    readTime: "7 min",
+    category: "Análise",
+    author: {
+      name: "Natan Ribeiro",
+      role: "CEO e Fundador",
+      avatar: "https://i.ibb.co/t2b7BjW/1hx98-EHHqgw.png"
+    }
+  }
+];
+
+export default function BlogSample() {
+  const { ref, inView } = useInView({
+    triggerOnce: true,
+    threshold: 0.1,
+  });
 
   return (
-    <div className="flex flex-col justify-center items-center">
-      <div className='flex flex-col items-center p-3 w-full'>
-        <div className='flex flex-col justify-start items-center gap-2 w-full'>
-          <div className='flex gap-3 justify-start items-center w-full'>
-            <h1 className={`${TITLE_TAILWIND_CLASS} mt-2 font-semibold tracking-tight dark:text-white text-gray-900`}>
-              Some Sample Blog Cards
-            </h1>
-          </div>
-          <div className='flex gap-3 justify-start items-center w-full border-b pb-4'>
-            <p className="text-gray-600 dark:text-gray-400">
-              All these articles were generated using Sample Articles AI
+    <section ref={ref} className="relative py-24 bg-gradient-to-b from-[#7CFFD4]/5 to-transparent">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={inView ? { opacity: 1, y: 0 } : {}}
+        transition={{ duration: 0.5 }}
+        className="container max-w-[1400px] mx-auto px-6"
+      >
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-16">
+          <div>
+            <h2 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-black dark:from-white to-[#7CFFD4]">
+              Últimas do Blog
+            </h2>
+            <p className="mt-4 text-xl text-gray-600 dark:text-gray-400">
+              Artigos e atualizações sobre IA em radiologia
             </p>
           </div>
+          <Link 
+            href="/blog"
+            className="mt-4 md:mt-0 px-6 py-3 bg-[#7CFFD4]/10 hover:bg-[#7CFFD4]/20 text-[#7CFFD4] rounded-full transition-colors"
+          >
+            Ver todos os artigos →
+          </Link>
         </div>
-      </div>
-      <div className='flex flex-col items-start'>
-        <div className="grid gap-5 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 mt-5">
-          {articles?.map((article) => (
-            <Link href={"/"} key={article?.id}>
-              <article
-                className="flex flex-col space-y-2 p-4 rounded-md border dark:bg-black"
-              >
-                <Image
-                  src={article?.image!}
-                  alt={"blog image"}
-                  width={804}
-                  height={452}
-                  className="rounded-md border bg-muted transition-colors"
-                />
-                <div className='flex lg:flex-row w-full justify-between items-center'>
-                  <h2 className="text-md lg:text-lg font-bold">{article?.title}</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {blogPosts.map((post, i) => (
+            <motion.article
+              key={i}
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : {}}
+              transition={{ duration: 0.5, delay: i * 0.1 }}
+              className="group relative bg-white dark:bg-black border border-[#7CFFD4]/10 rounded-xl overflow-hidden hover:border-[#7CFFD4]/30 transition-all duration-300 hover:shadow-[0_0_30px_rgba(124,255,212,0.1)]"
+            >
+              <Link href={`/blog/${post.slug}`} className="block">
+                <div className="relative h-56 overflow-hidden">
+                  <Image
+                    src={post.image}
+                    alt={post.title}
+                    fill
+                    className="object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+                  <div className="absolute top-4 left-4 px-3 py-1 bg-[#7CFFD4] text-black text-sm font-medium rounded-full">
+                    {post.category}
+                  </div>
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  {new Date(article?.date!)?.toLocaleDateString()}
-                </p>
-              </article>
-            </Link>
+
+                <div className="p-6 space-y-4">
+                  <div className="flex items-center justify-between text-sm text-gray-600 dark:text-gray-400">
+                    <span>{post.date}</span>
+                    <span className="px-3 py-1 bg-[#7CFFD4]/10 text-[#7CFFD4] rounded-full">
+                      {post.readTime} de leitura
+                    </span>
+                  </div>
+
+                  <h3 className="text-xl font-bold text-black dark:text-white group-hover:text-[#7CFFD4] transition-colors">
+                    {post.title}
+                  </h3>
+
+                  <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
+                    {post.excerpt}
+                  </p>
+
+                  <div className="pt-4 flex items-center gap-3 border-t border-[#7CFFD4]/10">
+                    <Image
+                      src={post.author.avatar}
+                      alt={post.author.name}
+                      width={40}
+                      height={40}
+                      className="rounded-full ring-2 ring-[#7CFFD4]/20"
+                    />
+                    <div>
+                      <p className="font-medium text-black dark:text-white">
+                        {post.author.name}
+                      </p>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">
+                        {post.author.role}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            </motion.article>
           ))}
         </div>
-      </div>
-    </div>
-
-  )
+      </motion.div>
+    </section>
+  );
 }

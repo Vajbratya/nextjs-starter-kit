@@ -35,24 +35,20 @@ type PricingCardProps = {
 
 const PricingHeader = ({ title, subtitle }: { title: string; subtitle: string }) => (
   <section className="text-center">
-    <h1 className={`${TITLE_TAILWIND_CLASS} mt-2 font-semibold tracking-tight dark:text-white text-gray-900`}>{title}</h1>
-    <p className="text-gray-600 dark:text-gray-400 pt-1">{subtitle}</p>
+    <h1 className="text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-[#7CFFD4] mb-4">{title}</h1>
+    <p className="text-gray-400">{subtitle}</p>
     <br />
   </section>
 )
 
 const PricingSwitch = ({ onSwitch }: PricingSwitchProps) => (
   <Tabs defaultValue="0" className="w-40 mx-auto" onValueChange={onSwitch}>
-    <TabsList className="py-6 px-2">
-      <TabsTrigger value="0" className="text-base">
-        <p className="text-black dark:text-white">
-          Monthly
-        </p>
+    <TabsList className="py-6 px-2 bg-black/50 border border-[#7CFFD4]/20">
+      <TabsTrigger value="0" className="text-base data-[state=active]:bg-[#7CFFD4] data-[state=active]:text-black">
+        <p>Mensal</p>
       </TabsTrigger>
-      <TabsTrigger value="1" className="text-base">
-        <p className="text-black dark:text-white">
-          Yearly
-        </p>
+      <TabsTrigger value="1" className="text-base data-[state=active]:bg-[#7CFFD4] data-[state=active]:text-black">
+        <p>Anual</p>
       </TabsTrigger>
     </TabsList>
   </Tabs>
@@ -62,30 +58,32 @@ const PricingCard = ({ user, handleCheckout, isYearly, title, priceIdMonthly, pr
   const router = useRouter();
   return (
     <Card
-      className={cn(`w-72 flex flex-col justify-between py-1 ${popular ? "border-rose-400" : "border-zinc-700"} mx-auto sm:mx-0`, {
-        "animate-background-shine bg-white dark:bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] transition-colors":
-          exclusive,
-      })}>
+      className={cn(
+        `w-72 flex flex-col justify-between py-1 bg-black border-[#7CFFD4]/20 backdrop-blur-sm hover:border-[#7CFFD4]/40 transition-all duration-300 mx-auto sm:mx-0`,
+        {
+          "border-[#7CFFD4]": popular,
+          "animate-background-shine bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] animate-shimmer": exclusive,
+        }
+      )}>
       <div>
         <CardHeader className="pb-8 pt-4">
           {isYearly && yearlyPrice && monthlyPrice ? (
             <div className="flex justify-between">
-              <CardTitle className="text-zinc-700 dark:text-zinc-300 text-lg">{title}</CardTitle>
-              <div
-                className={cn("px-2.5 rounded-xl h-fit text-sm py-1 bg-zinc-200 text-black dark:bg-zinc-800 dark:text-white", {
-                  "bg-gradient-to-r from-orange-400 to-rose-400 dark:text-black ": popular,
-                })}>
-                Save ${monthlyPrice * 12 - yearlyPrice}
+              <CardTitle className="text-white text-lg">{title}</CardTitle>
+              <div className={cn("px-2.5 rounded-xl h-fit text-sm py-1 bg-[#7CFFD4]/10 text-[#7CFFD4]", {
+                "bg-[#7CFFD4] text-black": popular,
+              })}>
+                Economia de ${monthlyPrice * 12 - yearlyPrice}
               </div>
             </div>
           ) : (
-            <CardTitle className="text-zinc-700 dark:text-zinc-300 text-lg">{title}</CardTitle>
+            <CardTitle className="text-white text-lg">{title}</CardTitle>
           )}
-          <div className="flex gap-0.5">
-            <h2 className="text-3xl font-bold">{yearlyPrice && isYearly ? "$" + yearlyPrice : monthlyPrice ? "$" + monthlyPrice : "Custom"}</h2>
-            <span className="flex flex-col justify-end text-sm mb-1">{yearlyPrice && isYearly ? "/year" : monthlyPrice ? "/month" : null}</span>
+          <div className="flex gap-0.5 text-[#7CFFD4]">
+            <h2 className="text-3xl font-bold">{yearlyPrice && isYearly ? "R$" + yearlyPrice : monthlyPrice ? "R$" + monthlyPrice : "Personalizado"}</h2>
+            <span className="flex flex-col justify-end text-sm mb-1">{yearlyPrice && isYearly ? "/ano" : monthlyPrice ? "/mês" : null}</span>
           </div>
-          <CardDescription className="pt-1.5 h-12">{description}</CardDescription>
+          <CardDescription className="pt-1.5 h-12 text-gray-400">{description}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-2">
           {features.map((feature: string) => (
@@ -99,21 +97,20 @@ const PricingCard = ({ user, handleCheckout, isYearly, title, priceIdMonthly, pr
             if (user?.id) {
               handleCheckout(isYearly ? priceIdYearly : priceIdMonthly, true)
             } else {
-              toast("Please login or sign up to purchase", {
-                description: "You must be logged in to make a purchase",
+              toast("Faça login ou cadastre-se para continuar", {
+                description: "Você precisa estar logado para fazer uma assinatura",
                 action: {
-                  label: "Sign Up",
-                  onClick: () => {
-                    router.push("/sign-up")
-                  },
+                  label: "Cadastrar",
+                  onClick: () => router.push("/sign-up"),
                 },
               })
             }
           }}
-          className="relative inline-flex w-full items-center justify-center rounded-md bg-black text-white dark:bg-white px-6 font-medium dark:text-black transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50"
-          type="button"
+          className={cn(
+            "relative w-full bg-[#7CFFD4] text-black hover:bg-[#7CFFD4]/90 transition-colors",
+            { "bg-[#7CFFD4] hover:bg-[#7CFFD4]/90": popular }
+          )}
         >
-          <div className="absolute -inset-0.5 -z-10 rounded-lg bg-gradient-to-b fr om-[#c7d2fe] to-[#8678f9] opacity-75 blur" />
           {actionLabel}
         </Button>
       </CardFooter>
@@ -123,8 +120,8 @@ const PricingCard = ({ user, handleCheckout, isYearly, title, priceIdMonthly, pr
 
 const CheckItem = ({ text }: { text: string }) => (
   <div className="flex gap-2">
-    <CheckCircle2 size={18} className="my-auto text-green-400" />
-    <p className="pt-0.5 text-zinc-700 dark:text-zinc-300 text-sm">{text}</p>
+    <CheckCircle2 size={18} className="my-auto text-[#7CFFD4]" />
+    <p className="pt-0.5 text-gray-300 text-sm">{text}</p>
   </div>
 )
 
@@ -166,32 +163,46 @@ export default function Pricing() {
 
   const plans = [
     {
-      title: "Basic",
-      monthlyPrice: 10,
-      yearlyPrice: 100,
-      description: "Essential features you need to get started",
-      features: ["Example Feature Number 1", "Example Feature Number 2", "Example Feature Number 3"],
+      title: "Starter",
+      monthlyPrice: 199,
+      yearlyPrice: 1990,
+      description: "Ideal para clínicas pequenas",
+      features: [
+        "Até 100 laudos/mês",
+        "Suporte por email",
+        "Integração básica",
+        "Backup diário"
+      ],
       priceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       priceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
-      actionLabel: "Get Started",
+      actionLabel: "Começar Agora",
     },
     {
       title: "Pro",
-      monthlyPrice: 25,
-      yearlyPrice: 250,
-      description: "Perfect for owners of small & medium businessess",
-      features: ["Example Feature Number 1", "Example Feature Number 2", "Example Feature Number 3"],
-      actionLabel: "Get Started",
+      monthlyPrice: 399,
+      yearlyPrice: 3990,
+      description: "Para clínicas em crescimento",
+      features: [
+        "Laudos ilimitados",
+        "Suporte prioritário",
+        "Integrações avançadas",
+        "Backup em tempo real"
+      ],
+      actionLabel: "Escolher Pro",
       priceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       priceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       popular: true,
     },
     {
       title: "Enterprise",
-      price: "Custom",
-      description: "Dedicated support and infrastructure to fit your needs",
-      features: ["Example Feature Number 1", "Example Feature Number 2", "Example Feature Number 3", "Super Exclusive Feature"],
-      actionLabel: "Contact Sales",
+      description: "Soluções personalizadas para sua operação",
+      features: [
+        "Volume personalizado",
+        "Suporte dedicado 24/7",
+        "Integrações customizadas",
+        "SLA garantido"
+      ],
+      actionLabel: "Falar com Vendas",
       priceIdMonthly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       priceIdYearly: process.env.NEXT_PUBLIC_STRIPE_PRICE_ID,
       exclusive: true,
@@ -199,14 +210,25 @@ export default function Pricing() {
   ]
 
   return (
-    <div>
-      <PricingHeader title="Sample Pricing Plans" subtitle="Use these sample pricing cards in your SAAS" />
-      <PricingSwitch onSwitch={togglePricingPeriod} />
-      <section className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-8 mt-8">
-        {plans.map((plan) => {
-          return <PricingCard user={user} handleCheckout={handleCheckout} key={plan.title} {...plan} isYearly={isYearly} />
-        })}
-      </section>
+    <div className="bg-white dark:bg-black py-32">
+      <div className="container max-w-[1400px] mx-auto px-6">
+        <PricingHeader 
+          title="Planos que Crescem com Você" 
+          subtitle="Escolha o plano ideal para suas necessidades" 
+        />
+        <PricingSwitch onSwitch={togglePricingPeriod} />
+        <section className="flex flex-col sm:flex-row sm:flex-wrap justify-center gap-10 mt-12">
+          {plans.map((plan) => (
+            <PricingCard 
+              user={user} 
+              handleCheckout={handleCheckout} 
+              key={plan.title} 
+              {...plan} 
+              isYearly={isYearly}
+            />
+          ))}
+        </section>
+      </div>
     </div>
   )
 }

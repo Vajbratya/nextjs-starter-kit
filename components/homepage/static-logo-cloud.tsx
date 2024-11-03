@@ -1,3 +1,5 @@
+import Image from 'next/image';
+
 const logos = [
   {
     name: 'Vercel',
@@ -33,11 +35,13 @@ const StaticLogoCloud = () => {
         <div className="group relative flex gap-6 px-2">
           <div className="flex shrink-0 flex-row justify-around gap-6">
             {logos.map((logo, key) => (
-              <img
+              <Image
                 key={key}
                 src={logo.url}
-                className="h-10 w-28 px-2 brightness-0"
-                alt={`${logo.name}`}
+                width={112}
+                height={40}
+                className="px-2 brightness-0"
+                alt={`${logo.name} logo`}
               />
             ))}
           </div>
